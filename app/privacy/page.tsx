@@ -1,10 +1,12 @@
 import Link from 'next/link';
+import { asset } from '../../lib/asset';
 
 export const metadata = { title: 'Privacy | Luminox Digital' };
 
 export default function Privacy() {
   return (
     <main className="legal">
+      <Link href="/" aria-label="Luminox Digital home"><img className="logo-img" src={asset('/images/luminox-logo-320.webp')} srcSet={`${asset('/images/luminox-logo-640.webp')} 2x`} width={320} height={102} alt="Luminox Digital" /></Link>
       <Link href="/">← Back to Luminox Digital</Link>
       <h1>Privacy information</h1>
       <p><strong>Pre-launch draft — not a final legal policy.</strong> Luminox Digital is a proposed brand. The company controller identity and contact details must be verified and added before public launch.</p>

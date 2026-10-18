@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { CHAT_API_URL, DONATION_MAX, DONATION_MIN, DONATION_URL, FORM_ENDPOINT } from '../lib/config';
 import { offlineReply } from '../lib/guide';
+import { asset } from '../lib/asset';
 
 type Msg = { role: 'user' | 'assistant'; content: string };
 type FormState = 'idle' | 'sending' | 'sent' | 'error';
@@ -99,11 +100,15 @@ export default function Home() {
     }
   }
 
-  const logo = (size: number) => (
-    <>
-      <span className="mark"><Sparkles size={size} /></span>
-      <span>luminox<span className="dot">.</span><small>DIGITAL</small></span>
-    </>
+  const logo = (
+    <img
+      className="logo-img"
+      src={asset('/images/luminox-logo-320.webp')}
+      srcSet={`${asset('/images/luminox-logo-320.webp')} 1x, ${asset('/images/luminox-logo-640.webp')} 2x`}
+      width={320}
+      height={102}
+      alt="Luminox Digital"
+    />
   );
 
   return (
@@ -111,7 +116,7 @@ export default function Home() {
       <a href="#home" className="skip-link">Skip to content</a>
       <header className="header">
         <div className="shell nav">
-          <a href="#home" className="logo" aria-label="Luminox Digital home">{logo(21)}</a>
+          <a href="#home" className="logo" aria-label="Luminox Digital home">{logo}</a>
           <nav className={menu ? 'links open' : 'links'} aria-label="Main navigation">
             {navItems.map(([href, label]) => <a key={href} href={href} onClick={() => setMenu(false)}>{label}</a>)}
           </nav>
@@ -186,13 +191,18 @@ export default function Home() {
 
         <section className="section story" id="about">
           <div className="shell story-grid">
-            <div className="story-art">
-              <div className="story-art-inner">
-                <div className="heart-circle"><HeartHandshake size={55} /></div>
-                <p>People first.<br />Technology second.</p>
-                <div className="small-stars" aria-hidden="true">✦ &nbsp; ✧ &nbsp; ✦</div>
-              </div>
-            </div>
+            <figure className="story-art">
+              <img
+                src={asset('/images/london-skyline-800.webp')}
+                srcSet={`${asset('/images/london-skyline-800.webp')} 800w, ${asset('/images/london-skyline-1448.webp')} 1448w`}
+                sizes="(max-width: 700px) 100vw, 540px"
+                width={1448}
+                height={1086}
+                loading="lazy"
+                alt="The Luminox Digital logo above the London skyline at sunrise"
+              />
+              <figcaption><HeartHandshake size={20} /> People first. Technology second.</figcaption>
+            </figure>
             <div className="story-copy">
               <span className="kicker">WHY I'M BUILDING LUMINOX</span>
               <h2>Because technology should <em>include everyone.</em></h2>
@@ -324,7 +334,7 @@ export default function Home() {
       <footer>
         <div className="shell footer-main">
           <div>
-            <a className="logo" href="#home">{logo(19)}</a>
+            <a className="logo" href="#home" aria-label="Luminox Digital home">{logo}</a>
             <p>Technology for everyday people.<br />Built on fairness. Driven by transparency.</p>
           </div>
           <div className="footer-links">
