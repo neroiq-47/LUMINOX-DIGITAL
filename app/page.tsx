@@ -33,8 +33,15 @@ export default function Home() {
   const [error, setError] = useState('');
   const [formState, setFormState] = useState<FormState>('idle');
   const bottom = useRef<HTMLDivElement>(null);
+  const fab = useRef<HTMLButtonElement>(null);
+  const chatWasOpen = useRef(false);
 
-  useEffect(() => bottom.current?.scrollIntoView({ behavior: 'smooth' }), [messages, chat]);
+  useEffect(() => bottom.current?.scrollIntoView({ block: 'nearest' }), [messages, chat, busy]);
+  // When the chat closes, put keyboard focus back on the chat button instead of losing it.
+  useEffect(() => {
+    if (!chat && chatWasOpen.current) fab.current?.focus();
+    chatWasOpen.current = chat;
+  }, [chat]);
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return;
@@ -71,7 +78,7 @@ export default function Home() {
         reply = data.reply;
       } else {
         await new Promise(r => setTimeout(r, 450));
-        reply = offlineReply(v);
+        reply = offlineReply(v, { formEnabled: Boolean(FORM_ENDPOINT) });
       }
       setMessages([...next, { role: 'assistant', content: reply }]);
     } catch (e) {
@@ -349,7 +356,7 @@ export default function Home() {
       </footer>
 
       {!chat && (
-        <button className="chat-fab" onClick={() => setChat(true)} aria-label="Open Luminox AI chat">
+        <button ref={fab} className="chat-fab" onClick={() => setChat(true)} aria-label="Open Luminox AI chat">
           <MessageCircle size={25} /><span>Ask Luminox AI</span>
         </button>
       )}
