@@ -35,7 +35,11 @@ export default function Home() {
 
   useEffect(() => bottom.current?.scrollIntoView({ behavior: 'smooth' }), [messages, chat]);
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setChat(false);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      setChat(false);
+      setMenu(false);
+    };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []);
@@ -51,13 +55,18 @@ export default function Home() {
     try {
       let reply: string;
       if (CHAT_API_URL) {
+        // Send only real conversation turns (not the greeting), capped to what the API accepts.
         const res = await fetch(CHAT_API_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ messages: next.slice(-12) }),
+          body: JSON.stringify({ messages: next.slice(1).slice(-12) }),
+        }).catch(() => {
+          throw new Error("Luminox AI can't be reached right now. Please check your connection and try again.");
         });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Unable to respond right now');
+        const data = await res.json().catch(() => null);
+        if (!res.ok || typeof data?.reply !== 'string' || !data.reply.trim()) {
+          throw new Error((typeof data?.error === 'string' && data.error) || 'Luminox AI is unavailable right now. Please try again shortly.');
+        }
         reply = data.reply;
       } else {
         await new Promise(r => setTimeout(r, 450));
@@ -324,7 +333,7 @@ export default function Home() {
           </div>
         </div>
         <div className="shell footer-bottom">
-          <span>© {new Date().getFullYear()} Luminox Digital. Concept-stage website.</span>
+          <span suppressHydrationWarning>© {new Date().getFullYear()} Luminox Digital. Concept-stage website.</span>
           <span>Made with people in mind ♡</span>
         </div>
       </footer>
