@@ -9,7 +9,8 @@ const httpsUrl = (value: string | undefined) => {
   }
 };
 
-export const DONATION_URL = httpsUrl(process.env.NEXT_PUBLIC_DONATION_URL);
+// Stripe Payment Link for the LUMINOX LTD product. A DONATION_URL repository variable overrides it.
+export const DONATION_URL = httpsUrl(process.env.NEXT_PUBLIC_DONATION_URL) || 'https://buy.stripe.com/14A00bgTEfLSaKBcYZ1gs00';
 export const FORM_ENDPOINT = httpsUrl(process.env.NEXT_PUBLIC_FORM_ENDPOINT);
 export const CHAT_API_URL = httpsUrl(process.env.NEXT_PUBLIC_CHAT_API_URL);
 

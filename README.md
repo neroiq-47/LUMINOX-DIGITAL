@@ -28,14 +28,11 @@ Every push to `main` runs `.github/workflows/deploy.yml`, which builds the site 
 
 One-time setup: **Settings → Pages → Build and deployment → Source: Deploy from a branch → `gh-pages` / `(root)`**.
 
-## Turning on donations
+## Donations
 
-1. In the Stripe Dashboard open the product **LUMINOX LTD** (`prod_VSlEXtmSC7DCWo`). Its price is already set to "customer chooses", GBP, £25–£10,000. Click **Create payment link**.
-2. Copy the link (`https://buy.stripe.com/...`).
-3. In GitHub: **Settings → Secrets and variables → Actions → Variables → New repository variable**, name `DONATION_URL`, value = the link.
-4. **Actions → Deploy to GitHub Pages → Run workflow** (or push to `main`).
+The Donate button opens the live Stripe Payment Link https://buy.stripe.com/14A00bgTEfLSaKBcYZ1gs00 (product **LUMINOX LTD**, `prod_VSlEXtmSC7DCWo`). Donors choose any amount from **£25 to £10,000**, and Stripe enforces those limits at checkout.
 
-Until `DONATION_URL` is set, the button shows "Donations opening soon". Stripe enforces the £25–£10,000 limits on its checkout page.
+To use a different link without editing code: **Settings → Secrets and variables → Actions → Variables**, add `DONATION_URL`, then **Actions → Deploy to GitHub Pages → Run workflow**. If you change the price limits in Stripe, also update `DONATION_MIN` / `DONATION_MAX` in `lib/config.ts`.
 
 Optional variables, same place: `FORM_ENDPOINT` (contact form), `CHAT_API_URL` (live AI chat: `POST {messages}` → `{reply}`; must allow CORS from the Pages domain and keep its API key server-side).
 
