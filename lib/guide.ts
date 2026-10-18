@@ -11,7 +11,7 @@ const topics: { keys: string[]; reply: string }[] = [
   {
     keys: ['donat', 'contribut', 'support us$', 'support luminox', 'sponsor', 'give money'],
     reply:
-      'Thank you for thinking of us! You can support Luminox Digital from the "Support us" section. Contributions from $25 to $100,000 are processed securely by Stripe.',
+      'Thank you for thinking of us! You can support Luminox Digital from the "Support us" section. Contributions from £25 to £10,000 are processed securely by Stripe.',
   },
   {
     keys: ['website', 'web app', 'webapp', 'web page', 'webpage', 'site$', 'sites$', 'shop', 'store$', 'ecommerce', 'e-commerce', 'online shop', 'landing page'],

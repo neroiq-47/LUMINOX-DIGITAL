@@ -13,5 +13,6 @@ export const DONATION_URL = httpsUrl(process.env.NEXT_PUBLIC_DONATION_URL);
 export const FORM_ENDPOINT = httpsUrl(process.env.NEXT_PUBLIC_FORM_ENDPOINT);
 export const CHAT_API_URL = httpsUrl(process.env.NEXT_PUBLIC_CHAT_API_URL);
 
+// Must match the Stripe price (GBP, custom amount £25–£10,000).
 export const DONATION_MIN = 25;
-export const DONATION_MAX = 100_000;
+export const DONATION_MAX = 10_000;

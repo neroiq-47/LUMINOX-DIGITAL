@@ -18,7 +18,7 @@ const services = [
   { icon: BrainCircuit, title: 'Practical AI', desc: 'Friendly AI tools that help save time and make everyday tasks easier.', tag: 'Useful automation' },
   { icon: HeartHandshake, title: 'Guidance & support', desc: 'A human-first approach, with simple explanations and honest advice.', tag: 'No confusing jargon' },
 ];
-const usd = (n: number) => '$' + n.toLocaleString('en-US');
+const gbp = (n: number) => '£' + n.toLocaleString('en-GB');
 const navItems = [['#about', 'Our story'], ['#services', 'Services'], ['#projects', 'Projects'], ['#support', 'Support us'], ['#contact', 'Contact']];
 
 export default function Home() {
@@ -239,10 +239,10 @@ export default function Home() {
               <div className="donate-icon"><Gift size={30} /></div>
               <h3>Make a contribution</h3>
               <p className="donate-range">
-                Give any amount from <strong>{usd(DONATION_MIN)}</strong> up to <strong>{usd(DONATION_MAX)}</strong>.
+                Give any amount from <strong>{gbp(DONATION_MIN)}</strong> up to <strong>{gbp(DONATION_MAX)}</strong>.
               </p>
               <div className="donate-scale" aria-hidden="true">
-                <span>{usd(DONATION_MIN)}</span><span className="bar" /><span>{usd(DONATION_MAX)}</span>
+                <span>{gbp(DONATION_MIN)}</span><span className="bar" /><span>{gbp(DONATION_MAX)}</span>
               </div>
               {DONATION_URL ? (
                 <a className="btn primary donate-btn" href={DONATION_URL} target="_blank" rel="noopener noreferrer">
