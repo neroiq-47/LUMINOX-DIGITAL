@@ -6,10 +6,10 @@ import {
   Lock, Mail, Menu, MessageCircle, Send, ShieldCheck, Sparkles, X,
 } from 'lucide-react';
 import { CHAT_API_URL, DONATION_MAX, DONATION_MIN, DONATION_URL, FORM_ENDPOINT } from '../lib/config';
-import { offlineReply } from '../lib/guide';
+import { agentReply, needsLookup, type Source } from '../lib/agent';
 import { asset } from '../lib/asset';
 
-type Msg = { role: 'user' | 'assistant'; content: string };
+type Msg = { role: 'user' | 'assistant'; content: string; source?: Source };
 type FormState = 'idle' | 'sending' | 'sent' | 'error';
 
 const starter = ['I need a website', 'Explain blockchain simply', 'How could AI help me?'];
@@ -30,6 +30,7 @@ export default function Home() {
   ]);
   const [input, setInput] = useState('');
   const [busy, setBusy] = useState(false);
+  const [lookingUp, setLookingUp] = useState(false);
   const [error, setError] = useState('');
   const [formState, setFormState] = useState<FormState>('idle');
   const bottom = useRef<HTMLDivElement>(null);
@@ -62,12 +63,13 @@ export default function Home() {
     setError('');
     try {
       let reply: string;
+      let source: Source | undefined;
       if (CHAT_API_URL) {
         // Send only real conversation turns (not the greeting), capped to what the API accepts.
         const res = await fetch(CHAT_API_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ messages: next.slice(1).slice(-12) }),
+          body: JSON.stringify({ messages: next.slice(1).slice(-12).map(({ role, content }) => ({ role, content })) }),
         }).catch(() => {
           throw new Error("Luminox AI can't be reached right now. Please check your connection and try again.");
         });
@@ -77,14 +79,18 @@ export default function Home() {
         }
         reply = data.reply;
       } else {
-        await new Promise(r => setTimeout(r, 450));
-        reply = offlineReply(v, { formEnabled: Boolean(FORM_ENDPOINT) });
+        // Prepared answers get a short pause so they don't feel abrupt; live lookups take their own time.
+        const lookup = needsLookup(v);
+        setLookingUp(lookup);
+        if (!lookup) await new Promise(r => setTimeout(r, 450));
+        ({ text: reply, source } = await agentReply(v, { formEnabled: Boolean(FORM_ENDPOINT) }));
       }
-      setMessages([...next, { role: 'assistant', content: reply }]);
+      setMessages([...next, { role: 'assistant', content: reply, source }]);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Something went wrong');
     } finally {
       setBusy(false);
+      setLookingUp(false);
     }
   }
 
@@ -366,13 +372,22 @@ export default function Home() {
             <div className="bot-avatar"><Bot /></div>
             <div>
               <strong>Luminox AI</strong>
-              <span>Your friendly technology guide · {CHAT_API_URL ? 'AI assistant' : 'offline guide'}</span>
+              <span>Your friendly technology guide · {CHAT_API_URL ? 'AI assistant' : 'with live facts'}</span>
             </div>
             <button onClick={() => setChat(false)} aria-label="Close chat"><X size={21} /></button>
           </div>
           <div className="chat-messages" aria-live="polite">
-            {messages.map((m, i) => <div key={i} className={'chat-msg ' + m.role}>{m.content}</div>)}
-            {busy && <div className="chat-msg assistant">Thinking...</div>}
+            {messages.map((m, i) => (
+              <div key={i} className={'chat-msg ' + m.role}>
+                {m.content}
+                {m.source && (
+                  <a className="chat-source" href={m.source.url} target="_blank" rel="noopener noreferrer">
+                    Source: {m.source.label} <ArrowUpRight size={12} />
+                  </a>
+                )}
+              </div>
+            ))}
+            {busy && <div className="chat-msg assistant">{lookingUp ? 'Looking that up…' : 'Thinking...'}</div>}
             {error && <p className="chat-error" role="alert">{error}</p>}
             <div ref={bottom} />
           </div>

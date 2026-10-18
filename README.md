@@ -9,7 +9,11 @@ Luminox Digital is a UK technology startup making web development, blockchain, W
 - Responsive Next.js 15 site, statically exported for GitHub Pages
 - Services, founder story, concept project and contact sections
 - **Support us / Donate** section: contributions from **£25 to £10,000** via Stripe Checkout
-- Luminox AI chat: a built-in offline guide that runs in the browser, or a live AI backend if `CHAT_API_URL` is set
+- Luminox AI chat (`lib/agent.ts`, `lib/guide.ts`): prepared answers about Luminox, plus **live facts from free, keyless public APIs** called straight from the browser:
+  - Wikipedia: “What is…?” definitions, with a source link
+  - CoinGecko: live crypto prices in GBP
+  - Frankfurter: European Central Bank exchange rates (e.g. “£25 in dollars”, “Can I donate in euros?”)
+  Only the search term is sent to these services. Safety (passwords, seed phrases, card numbers) and investment-advice answers always take priority. A separate AI backend can still be plugged in with `CHAT_API_URL`.
 - Contact form that posts to a form service (e.g. Formspree) once `FORM_ENDPOINT` is set; disabled otherwise
 - Draft privacy page at `/privacy/`
 

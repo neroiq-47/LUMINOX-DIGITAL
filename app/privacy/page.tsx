@@ -11,7 +11,13 @@ export default function Privacy() {
       <h1>Privacy information</h1>
       <p><strong>Pre-launch draft — not a final legal policy.</strong> Luminox Digital is a proposed brand. The company controller identity and contact details must be verified and added before public launch.</p>
       <h2>AI assistant</h2>
-      <p>By default the assistant is an offline guide that runs entirely in your browser; your messages are not sent anywhere. If a live AI service is connected, messages are sent to that service to generate a response. Do not share passwords, wallet recovery phrases or sensitive personal information. Chat transcripts are not intentionally saved.</p>
+      <p>Luminox AI answers most questions with prepared answers that run in your browser. For some questions it looks up live facts from free public services, and only the search term is sent, never your whole message or conversation:</p>
+      <ul>
+        <li><strong>Wikipedia</strong> (Wikimedia Foundation): the topic of a &ldquo;What is&hellip;?&rdquo; question, for example &ldquo;smart contract&rdquo;.</li>
+        <li><strong>CoinGecko</strong>: the names of cryptocurrencies when you ask for a price.</li>
+        <li><strong>Frankfurter</strong> (European Central Bank reference rates): the currencies when you ask for a conversion.</li>
+      </ul>
+      <p>These services receive your IP address as part of any normal web request, under their own privacy policies. If a separate live AI service is connected in future, messages would be sent to it to generate a response. Do not share passwords, wallet recovery phrases or sensitive personal information. Chat transcripts are not saved.</p>
       <h2>Donations</h2>
       <p>Donations are processed by Stripe on Stripe&apos;s own secure checkout page. We never see or store your card details. Stripe shares the information needed to record your contribution (such as name, email and amount) with us. See <a href="https://stripe.com/privacy" target="_blank" rel="noopener noreferrer">Stripe&apos;s privacy policy</a>.</p>
       <h2>Contact form</h2>
